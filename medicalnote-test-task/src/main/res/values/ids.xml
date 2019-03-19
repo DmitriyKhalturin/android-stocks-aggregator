@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item name="guideline" type="id" />
+  <item name="volume_label" type="id" />
+  <item name="volume" type="id" />
+  <item name="amount_label" type="id" />
+  <item name="amount" type="id" />
+</resources>
