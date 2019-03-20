@@ -32,9 +32,7 @@ class MainActivity: AppCompatActivity() {
 
     mainAnkoComponent.setOnRefreshListener { presenter.updateCurrenciesList() }
 
-    presenter.currencyLiveData.observe(this, Observer { mainAnkoComponent.setItems(it) })
-
-    presenter.updateCurrenciesList()
+    presenter.currenciesLiveData.observe(this, Observer { mainAnkoComponent.setItems(it) })
   }
 
 }

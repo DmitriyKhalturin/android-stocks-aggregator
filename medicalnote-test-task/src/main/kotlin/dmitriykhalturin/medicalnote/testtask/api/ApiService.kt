@@ -1,6 +1,6 @@
 package dmitriykhalturin.medicalnote.testtask.api
 
-import dmitriykhalturin.medicalnote.testtask.model.ResponseModel
+import dmitriykhalturin.medicalnote.testtask.model.ApiResponseModel
 import io.reactivex.Observable
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -15,13 +15,13 @@ interface ApiService {
 
   companion object {
 
-    const val url = "http://phisix-api3.appspot.com/"
+    private const val BASE_URL = "http://phisix-api3.appspot.com/"
 
     fun create(): ApiService {
       val retrofit = Retrofit.Builder()
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(url)
+        .baseUrl(BASE_URL)
         .build()
 
       return retrofit.create(ApiService::class.java)
@@ -30,6 +30,6 @@ interface ApiService {
   }
 
   @GET(value = "stocks.json")
-  fun getCurrenciesList(): Observable<ResponseModel.GetCurrenciesList>
+  fun getStocks(): Observable<ApiResponseModel.GetStocks>
 
 }

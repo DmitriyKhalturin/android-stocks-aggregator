@@ -4,7 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import dmitriykhalturin.medicalnote.testtask.view.activity.MainActivity
-import dmitriykhalturin.medicalnote.testtask.view.currency_list.CurrencyAdapter
+import dmitriykhalturin.medicalnote.testtask.view.currency_list.CurrenciesAdapter
 import dmitriykhalturin.medicalnote.testtask.view.currency_list.CurrencyData
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
@@ -22,7 +22,7 @@ class MainAnkoComponent: AnkoComponent<MainActivity> {
 
   private var onRefreshListener: (() -> Unit)? = null
 
-  private val currencyAdapter = CurrencyAdapter()
+  private val currenciesAdapter = CurrenciesAdapter()
 
   override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
     constraintLayout {
@@ -32,7 +32,7 @@ class MainAnkoComponent: AnkoComponent<MainActivity> {
         }
 
         recyclerView {
-          adapter = currencyAdapter
+          adapter = currenciesAdapter
           layoutManager = LinearLayoutManager(ui.owner)
           setHasFixedSize(true)
         }
@@ -42,7 +42,7 @@ class MainAnkoComponent: AnkoComponent<MainActivity> {
 
   fun setItems(value: MutableList<CurrencyData>?) = value?.let {
     swipeRefreshLayout.isRefreshing = false
-    currencyAdapter.setItems(it)
+    currenciesAdapter.setItems(it)
   }
 
   fun setOnRefreshListener(action: () -> Unit) {

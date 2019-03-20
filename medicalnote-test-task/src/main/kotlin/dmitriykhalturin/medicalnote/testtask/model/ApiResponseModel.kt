@@ -4,9 +4,9 @@ package dmitriykhalturin.medicalnote.testtask.model
  * Created by Dmitriy Khalturin <dmitry.halturin.86@gmail.com>
  * for android-medicalnote-test-task on 20.03.19 2:56.
  */
-object ResponseModel {
+object ApiResponseModel {
 
-  data class GetCurrenciesList(
+  data class GetStocks(
     val stock: List<Stock>,
     val as_of: String
   )

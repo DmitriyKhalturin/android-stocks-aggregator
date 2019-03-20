@@ -9,7 +9,7 @@ import org.jetbrains.anko.AnkoContext
  * Created by Dmitriy Khalturin <dmitry.halturin.86@gmail.com>
  * for android-medicalnote-test-task on 19.03.19 23:34.
  */
-class CurrencyAdapter: RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
+class CurrenciesAdapter: RecyclerView.Adapter<CurrenciesAdapter.CurrencyViewHolder>() {
 
   private val items: MutableList<CurrencyData> = ArrayList()
 
