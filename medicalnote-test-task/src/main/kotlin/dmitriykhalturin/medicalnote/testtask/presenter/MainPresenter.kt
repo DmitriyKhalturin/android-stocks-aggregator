@@ -2,7 +2,6 @@ package dmitriykhalturin.medicalnote.testtask.presenter
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log.d
 import dmitriykhalturin.medicalnote.testtask.MainApplication
 import dmitriykhalturin.medicalnote.testtask.api.ApiService
 import dmitriykhalturin.medicalnote.testtask.executor.PostExecutionThread
@@ -21,6 +20,11 @@ import kotlin.concurrent.schedule
  */
 class MainPresenter: ViewModel() {
 
+  companion object {
+    const val FETCHING_DELAY = 0L
+    const val FETCHING_TIMEOUT = 15000L
+  }
+
   private val appComponent by lazy { MainApplication.injector.getAppComponent() }
 
   private val apiService by lazy { ApiService.create() }
@@ -31,25 +35,27 @@ class MainPresenter: ViewModel() {
 
   init {
     appComponent.inject(this)
-
-    setRepeatingTask()
   }
 
   private var apiRequestDisposable: Disposable? = null
-  private var requestRepeatingTask: TimerTask? = null
+  private var fetchingTask: TimerTask? = null
 
   val currenciesLiveData = MutableLiveData<MutableList<CurrencyData>>()
 
-  private fun setRepeatingTask() {
-    requestRepeatingTask = Timer().schedule(0, 15000) {
-      updateCurrenciesList()
+  fun fetchingStocks() {
+    fetchingTask = Timer().schedule(FETCHING_DELAY, FETCHING_TIMEOUT) {
+      getStocksList()
     }
   }
 
-  fun updateCurrenciesList() {
+  fun interruptFetching() {
+    fetchingTask?.cancel()
+  }
+
+  fun getStocksList() {
     if (apiRequestDisposable == null) {
       apiRequestDisposable = apiService.getStocks()
-        .map { stocksResponseToCurrenciesList(it) }
+        .map(::stocksResponseToCurrenciesList)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribe({
@@ -57,13 +63,12 @@ class MainPresenter: ViewModel() {
 
           apiRequestDisposable = null
         }, {
-          d("RESPONSE_ERROR", it.message)
+          // TODO: handle exception
         })
     }
   }
 
   override fun onCleared() {
-    requestRepeatingTask?.cancel()
     apiRequestDisposable?.dispose()
 
     super.onCleared()

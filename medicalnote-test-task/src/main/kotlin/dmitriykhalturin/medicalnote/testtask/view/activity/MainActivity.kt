@@ -3,7 +3,10 @@ package dmitriykhalturin.medicalnote.testtask.view.activity
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import dmitriykhalturin.medicalnote.testtask.MainApplication
+import dmitriykhalturin.medicalnote.testtask.R
 import dmitriykhalturin.medicalnote.testtask.presenter.MainPresenter
 import dmitriykhalturin.medicalnote.testtask.view.anko_component.MainAnkoComponent
 import org.jetbrains.anko.setContentView
@@ -24,15 +27,41 @@ class MainActivity: AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    title = ""
-
     mainAnkoComponent.setContentView(this)
 
     presenterComponent.inject(this)
 
-    mainAnkoComponent.setOnRefreshListener { presenter.updateCurrenciesList() }
+    mainAnkoComponent.setOnRefreshListener { presenter.getStocksList() }
 
     presenter.currenciesLiveData.observe(this, Observer { mainAnkoComponent.setItems(it) })
+  }
+
+  override fun onPause() {
+    super.onPause()
+
+    presenter.interruptFetching()
+  }
+
+  override fun onResume() {
+    super.onResume()
+
+    presenter.fetchingStocks()
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.main_menu, menu)
+
+    return true
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    return when(item?.itemId) {
+      R.id.action_get_stocks -> {
+        presenter.getStocksList()
+        true
+      }
+      else -> super.onContextItemSelected(item)
+    }
   }
 
 }
