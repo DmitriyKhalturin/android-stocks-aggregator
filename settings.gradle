@@ -1,1 +1,1 @@
-include ':medicalnote-test-task'
+include ':app'
