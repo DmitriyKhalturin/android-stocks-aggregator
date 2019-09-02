@@ -22,14 +22,13 @@ class MainAnkoComponent: AnkoComponent<MainActivity> {
 
   private var onRefreshListener: (() -> Unit)? = null
 
-  private val currenciesAdapter =
-    CurrenciesAdapter()
+  private val currenciesAdapter = CurrenciesAdapter()
 
   override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
     constraintLayout {
       swipeRefreshLayout = swipeRefreshLayout {
         setOnRefreshListener {
-          onRefreshListener?.run { this() }
+          onRefreshListener?.invoke()
         }
 
         recyclerView {

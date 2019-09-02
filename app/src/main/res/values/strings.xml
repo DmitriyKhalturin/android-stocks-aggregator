@@ -1,4 +1,4 @@
 <resources>
-  <string name="app_name">MedicalNote TestTask</string>
+  <string name="app_name">Stocks Aggregator</string>
   <string name="action_get_stocks">Fetch stocks</string>
 </resources>
